@@ -4,4 +4,4 @@
 
 Name=$1
 
-./Release/filtration ../filtrations/$Name.txt ../intervals/$Name.txt ../log/$Name_
+../Release/filtration ../filtrations/$Name.txt ../intervals/$Name.txt ../log/"$Name"_

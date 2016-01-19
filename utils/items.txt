@@ -39,3 +39,7 @@
 torus
 klein-bottle
 mobius-strip
+filtration_A
+filtration_B
+filtration_C
+filtration_D

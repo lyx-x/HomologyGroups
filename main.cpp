@@ -1,3 +1,12 @@
+/*
+ * Persistence and homology groups
+ *
+ * This program takes a file of filtration and output a file of all intervals
+ *
+ * Ex: filtration [filtration_file] [interval_file] [logfile_suffixe]
+ */
+
+
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -157,7 +166,7 @@ void add(vector<int> &self, const vector<int> &other) {
  */
 void reduction(matrix &m) {
 	int time = 0;
-	map<int, int> inverse_low;
+	map<int, int> inverse_low; // register the low value in order to get associated column
 	for (int i = 0; i < m.size(); i++) {
 		if (m[i].size() == 0)
 			continue;
@@ -226,6 +235,7 @@ vector<simplex> read_filtration(const string name){
 	ios::sync_with_stdio(false);
 
 	map<int, int> vertices_count;
+	int dim_count = 0;
 	if (input) {
 		float val;
 		int dim, tmp;
@@ -234,6 +244,7 @@ vector<simplex> read_filtration(const string name){
 			if (input.eof()) // avoid ghost line
 				break;
 			simplex s(dim, val);
+			dim_count += dim;
 			for (int i = 0; i <= dim; i++) {
 				input >> tmp;
 				s.vert.insert(tmp);
@@ -252,6 +263,7 @@ vector<simplex> read_filtration(const string name){
 	for (auto count: vertices_count)
 		LOG(INFO) << "Vertices of dim " << count.first << ": " << count.second << endl;
 	LOG(INFO) << "Simplexes: " << F.size() << endl;
+	LOG(INFO) << "Average Dim: " << dim_count / float(F.size()) << endl;
 	return F;
 };
 
