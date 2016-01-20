@@ -146,7 +146,7 @@ void add(vector<int> &self, const vector<int> &other) {
 	vector<int> tmp;
 	auto a = self.begin();
 	auto b = other.begin();
-	while (a != self.end() && b != other.end()) {
+	while ((a != self.end()) && (b != other.end())) {
 		if (*a == *b) { // same number
 			a++;
 			b++;
@@ -157,6 +157,14 @@ void add(vector<int> &self, const vector<int> &other) {
 			tmp.push_back(*b); // b is not in self set
 			b++;
 		}
+	}
+	while (a != self.end()) {
+		tmp.push_back(*a);
+		a++;
+	}
+	while (b != other.end()) {
+		tmp.push_back(*b);
+		b++;
 	}
 	self = tmp; // overwrite the column
 }
@@ -177,7 +185,9 @@ void reduction(matrix &m) {
 				break;
 			add(m[i], m[inverse_low[low]]);
 			time++;
+			//cout << i << endl << m << ' ' << inverse_low[low] << ' ' << low << endl;
 		} while (m[i].size() > 0);
+		low = m[i].size() > 0 ? *(m[i].rbegin()) : -1;
 		inverse_low[low] = i;
 	}
 	LOG(INFO) << "Average reduction times: " << time / float(m.size()) << endl;
@@ -214,7 +224,8 @@ multiset<interval> get_intervals(const matrix &reduced_m, const vector<simplex> 
 			i.start = start[c];
 			i.end = end[c];
 			i.dim = dim[c];
-			res.insert(i);
+			if (i.end != i.start)
+				res.insert(i);
 		}
 	}
 
